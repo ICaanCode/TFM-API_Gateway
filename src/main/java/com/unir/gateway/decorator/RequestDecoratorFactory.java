@@ -25,7 +25,7 @@ public class RequestDecoratorFactory {
      * If the method is PATCH, it creates a PatchRequestDecorator.
      * If the method is PUT, it creates a PutRequestDecorator.
      * If the method is DELETE, it creates a DeleteRequestDecorator.
-     * If the method is neither GET nor POST, it throws an IllegalArgumentException.
+     * If the method is not one of them, it throws an IllegalArgumentException.
      *
      * @param request the GatewayRequest object to be decorated
      * @return a ServerHttpRequestDecorator that decorates the GatewayRequest object

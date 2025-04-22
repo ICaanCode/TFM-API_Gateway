@@ -23,7 +23,7 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: false
           lower-case-service-id: true
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
@@ -34,7 +34,13 @@ spring:
             allowedHeaders: "*" ## All headers allowed
             allowedMethods:
             - POST
-      
+      routes:
+        - id: turnos
+          uri: lb://turnos
+          predicates:
+            - Path=/turnos/**
+          filters:
+            - RewritePath=/turnos/?(?<remaining>.*), /${remaining}
 
 ## We enable the Actuator API to be able to access <<host>>/actuator/gateway/routes
 ## We expose the routings that have been automatically detected (all)

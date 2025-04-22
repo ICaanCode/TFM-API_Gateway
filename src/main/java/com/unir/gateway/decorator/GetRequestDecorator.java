@@ -51,10 +51,10 @@ public class GetRequestDecorator extends ServerHttpRequestDecorator {
     @NonNull
     public URI getURI() {
         return UriComponentsBuilder
-                .fromUri((URI) gatewayRequest.getExchange().getAttributes().get(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR))
-                .queryParams(gatewayRequest.getQueryParams())
-                .build()
-                .toUri();
+            .fromUri((URI) gatewayRequest.getExchange().getAttributes().get(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR))
+            .queryParams(gatewayRequest.getQueryParams())
+            .build()
+            .toUri();
     }
 
     /**
