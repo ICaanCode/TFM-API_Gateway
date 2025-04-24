@@ -1,18 +1,18 @@
 server:
-  port: ${PORT:8762}
-        
+  port: ${GATEWAY_PORT:8762}
+  forward-headers-strategy: framework
+
 ## Classic Eureka configuration
 eureka:
   instance:
     preferIpAddress: true
     hostname: ${HOSTNAME:localhost}
-    
+
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
-      
 
 ## Enable service discovery (with Eureka)
 ## lower-case-service-id is mandatory, otherwise is retrieved in upper case from Eureka
@@ -33,7 +33,8 @@ spring:
             allowedOrigins: ${ALLOWED_ORIGINS:*} # With '*' we allow all origins. We can restrict by indicating domains or ip + port, e.g. http://localhost:3000 (where our front is, or a Vercel domain)
             allowedHeaders: "*" ## All headers allowed
             allowedMethods:
-            - POST
+              - POST
+              - OPTIONS
       routes:
         - id: turnos
           uri: lb://turnos
@@ -41,6 +42,19 @@ spring:
             - Path=/turnos/**
           filters:
             - RewritePath=/turnos/?(?<remaining>.*), /${remaining}
+        - id: pacientes
+          uri: lb://pacientes
+          predicates:
+            - Path=/pacientes/**
+          filters:
+            - RewritePath=/pacientes/?(?<remaining>.*), /${remaining}
+        - id: usuarios
+          uri: lb://usuarios
+          predicates:
+            - Path=/usuarios/**
+          filters:
+            - RewritePath=/usuarios/?(?<remaining>.*), /${remaining}
+
 
 ## We enable the Actuator API to be able to access <<host>>/actuator/gateway/routes
 ## We expose the routings that have been automatically detected (all)
